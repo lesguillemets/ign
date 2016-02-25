@@ -58,7 +58,10 @@ getIgnDir = do
 cpIgn :: FilePath -> IO ()
 cpIgn f = do
     d <- getCurrentDirectory
-    copyFile f (d </> ".gitignore")
+    let loc = d </> ".gitignore"
+    b <- doesFileExist loc
+    if b then putStrLn ".gitignore already exists. abort."
+        else copyFile f loc
 
 data Err = DirNotFound
          | FileNotFound
