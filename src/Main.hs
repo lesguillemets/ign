@@ -75,7 +75,8 @@ help NoArgumentsGiven = putStr .  unlines $
     ]
 help DirNotFound = putStr .  unlines $
     [
-        "directry not found.  try `$ export IGN_DIR=/path/to/dir`"
+        "directry not found.  try `$ export IGN_DIR=/path/to/dir`.",
+        "By default, `~/.ignFiles/` is used."
     ]
 help FileNotFound = putStr .  unlines $
     [
