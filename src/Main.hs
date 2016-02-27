@@ -9,30 +9,30 @@ main = do
     arg <- getArgs
     case arg of
          [] -> help NoArgumentsGiven
-         (ftype:_) -> mkIgn ftype
+         (fType:_) -> mkIgn fType
 defaultDir :: IO FilePath
 defaultDir = do
     home <- getHomeDirectory
     return $ home </> ".ignFiles/"
 
 mkIgn :: String -> IO ()
-mkIgn ftype = do
-    f <- getIgnFilePath ftype
+mkIgn fType = do
+    f <- getIgnFilePath fType
     case f of
          Left err -> help err -- TODO : handle FileNotFound
          Right fPath -> cpIgn fPath
 
 getIgnFilePath :: String -> IO (Either Err FilePath)
-getIgnFilePath ftype = do
+getIgnFilePath fType = do
     g <- getIgnDir
     case g of
-         (Right dir) -> searchIgnFile ftype dir
+         (Right dir) -> searchIgnFile fType dir
          (Left _) -> return g
 
 searchIgnFile :: String -> FilePath -> IO (Either Err FilePath)
-searchIgnFile ftype' dir = do
-    let ftype = headCapt . normaliseFileType $ ftype'
-        fname = ftype <> ".gitignore"
+searchIgnFile fType' dir = do
+    let fType = headCapt . normaliseFileType $ fType'
+        fname = fType <> ".gitignore"
         loc = dir </> fname
     b <- doesFileExist loc
     if b then return (Right loc)
