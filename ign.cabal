@@ -15,8 +15,10 @@ cabal-version:       >=1.10
 
 executable ign
   main-is:             Main.hs
-  -- other-extensions:    
+  other-modules:       Base
+  other-extensions:    OverloadedLists
   build-depends:       base >=4.8 && <4.9
+                     , containers
                      , process
                      , directory
                      , filepath

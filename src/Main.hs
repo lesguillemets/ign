@@ -1,9 +1,10 @@
 import Data.Maybe
-import Data.Char
 import Data.Monoid
 import System.Environment
 import System.Directory
 import System.FilePath.Posix
+
+import Base
 
 main = do
     arg <- getArgs
@@ -31,20 +32,12 @@ getIgnFilePath fType = do
 
 searchIgnFile :: String -> FilePath -> IO (Either Err FilePath)
 searchIgnFile fType' dir = do
-    let fType = headCapt . normaliseFileType $ fType'
+    let fType = normaliseFileType $ fType'
         fname = fType <> ".gitignore"
         loc = dir </> fname
     b <- doesFileExist loc
     if b then return (Right loc)
          else return (Left FileNotFound)
-
-normaliseFileType :: String -> String
-normaliseFileType "hs" = "haskell"
-normaliseFileType "hst" = "haste"
-normaliseFileType x = x
-headCapt :: String -> String
-headCapt [] = []
-headCapt (h:t) = toUpper h : t
 
 getIgnDir :: IO (Either Err FilePath)
 getIgnDir = do
