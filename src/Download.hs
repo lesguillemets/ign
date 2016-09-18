@@ -10,14 +10,13 @@ import Network.HTTP.Simple (httpLBS)
 import Network.HTTP.Conduit
 import Network.HTTP.Types (statusCode)
 
-import Data.ByteString.Lazy.Char8 (pack, ByteString)
+import Data.ByteString.Lazy.Char8 (ByteString)
 import Data.Monoid
 
 
 downloadUrl :: String -> String
 downloadUrl fileType =
-    "https://raw.githubusercontent.com/github/gitignore/master/"
-    <> fileType <> ".gitignore"
+    "https://raw.githubusercontent.com/github/gitignore/master/" <> fileType
 
 ignDownload :: String -> IO (Maybe ByteString)
 ignDownload f = do
