@@ -1,5 +1,9 @@
+module Main (main) where
+
 import Data.Maybe
 import Data.Monoid
+import Prelude hiding (writeFile)
+import Data.ByteString.Lazy.Char8 (writeFile)
 import System.Environment
 import System.Directory
 import System.FilePath.Posix
@@ -38,7 +42,7 @@ searchIgnFile fType' dir = do
         loc = dir </> fname
     b <- doesFileExist loc
     if b then return (Right loc)
-         else return (Left FileNotFound)
+         else return (Left (FileNotFound fname loc))
 
 getIgnDir :: IO (Either Err FilePath)
 getIgnDir = do
@@ -58,7 +62,7 @@ cpIgn f = do
         else copyFile f loc
 
 data Err = DirNotFound
-         | FileNotFound
+         | FileNotFound String FilePath
          | NoArgumentsGiven
 
 help :: Err -> IO ()
@@ -72,7 +76,12 @@ help DirNotFound = putStr .  unlines $
         "directry not found.  try `$ export IGN_DIR=/path/to/dir`.",
         "By default, `~/.ignFiles/` is used."
     ]
-help FileNotFound = putStr .  unlines $
-    [
-        "file not found"
-    ]
+help (FileNotFound f path) = do
+    putStrLn "File not found. I'll try to download from github.."
+    ignore <- ignDownload f
+    case ignore of
+         Nothing -> putStrLn "Still not found. Invalid filetype?"
+         Just x -> do
+             putStrLn $ "Found it. Saving to " <> path
+             writeFile path x
+             cpIgn path
