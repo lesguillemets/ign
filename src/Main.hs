@@ -5,6 +5,7 @@ import System.Directory
 import System.FilePath.Posix
 
 import Base
+import Download
 
 main = do
     arg <- getArgs
