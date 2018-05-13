@@ -18,7 +18,7 @@ executable ign
   other-modules:       Base
                      , Download
   other-extensions:    OverloadedLists
-  build-depends:       base >=4.8 && < 4.9
+  build-depends:       base >=4.8 && < 5.0
                      , containers
                      , bytestring
                      , http-types
